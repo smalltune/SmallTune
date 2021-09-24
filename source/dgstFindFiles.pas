@@ -84,7 +84,7 @@ implementation
       i: Integer;
       Tmp : String;
     begin
-      hFile := FindFirstFile(PChar(AParentFolder + '*'), W32FD);
+      hFile := FindFirstFile(PWideChar(AParentFolder + '*'), W32FD);
       if hFile <> INVALID_HANDLE_VALUE then
       begin
         repeat
