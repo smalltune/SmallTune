@@ -466,7 +466,7 @@ var
   {$ENDIF IMAGES_ONLY}
 
 
-  function GdipLoadImageFromResource(hInstance: THandle; ResName: PChar; out image: TGpImage): TGpStatus;
+  function GdipLoadImageFromResource(hInstance: THandle; ResName: PWideChar; out image: TGpImage): TGpStatus;
   function Gdip_GetStringSize(graphics: TGpGraphics; stringFormat: TGpStringFormat;
     font: TGpFont; txt: PWChar; out Width, Height: integer ): TGpStatus;
 
@@ -517,7 +517,7 @@ begin
         msg := 'Undef. GDI-Error !';
     end;
 
-    MessageBox(0, PCHAR(msg), 'GDIPlus-Error:',
+    MessageBox(0, PWideChar(msg), 'GDIPlus-Error:',
       MB_SETFOREGROUND or MB_APPLMODAL or MB_ICONERROR or MB_OK);
 
     halt;

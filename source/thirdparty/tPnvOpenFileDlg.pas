@@ -91,7 +91,6 @@ type
   TOpenFileDlg = class
   private
     ofn: TOpenFilenameA;
-    //FNames: PChar;
     FNames: array[0.._MAX_FILES_SPACE] of Char;
     FFilter: array[0.._MAX_FILE_FILTER] of Char;
 
@@ -207,7 +206,7 @@ end;
 procedure TOpenFileDlg.SetCaption(Value: String);
 begin
   FCaption := Value;
-  ofn.lpstrTitle := PCHAR(FCaption);
+  ofn.lpstrTitle := PAnsiCHAR(FCaption);
 end;
 
 procedure TOpenFileDlg.SetFileFilter(Value: String);
@@ -234,7 +233,7 @@ begin
   if FInitialDir <> Value then
   begin
     FInitialDir := Value;
-    ofn.lpstrInitialDir := PCHAR(FInitialDir);
+    ofn.lpstrInitialDir := PAnsiCHAR(FInitialDir);
   end;
 end;
 

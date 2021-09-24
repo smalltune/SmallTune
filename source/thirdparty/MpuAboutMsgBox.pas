@@ -93,7 +93,7 @@ function Format(fmt: string; params: array of const): string;
 var
   pdw1, pdw2        : PDWORD;
   i                 : integer;
-  pc                : PCHAR;
+  pc                : PWideChar;
 begin
   pdw1 := nil;
   if length(params) > 0 then
@@ -107,7 +107,7 @@ begin
   GetMem(pc, 1024 - 1);
   try
     ZeroMemory(pc, 1024 - 1);
-    SetString(Result, pc, wvsprintf(pc, PCHAR(fmt), PCHAR(pdw1)));
+    SetString(Result, pc, wvsprintf(pc, PWideChar(fmt), PWideChar(pdw1)));
   except
     Result := '';
   end;
@@ -132,9 +132,9 @@ begin
     begin
       Handle := wP;
       hBtn := GetDlgItem(Handle, IDOK);
-      SetWindowText(hBtn, PChar(rsHP));
+      SetWindowText(hBtn, PWideChar(rsHP));
       hBtn := GetDlgItem(Handle, IDCANCEL);
-      SetWindowText(hBtn, PChar(rsClose));
+      SetWindowText(hBtn, PWideChar(rsClose));
       result := 0;
       exit;
     end;
@@ -148,7 +148,7 @@ begin
   if FIDIcon > -1 then
     result := MsgBoxIndirect(Text, Caption, Flags, FIDIcon)
   else
-    result := MessageBox(FHandle, PChar(Text), PChar(Caption), Flags or MB_ICONINFORMATION);
+    result := MessageBox(FHandle, PWideChar(Text), PWideChar(Caption), Flags or MB_ICONINFORMATION);
   UnhookWindowsHookEx(hMsgBoxHook);
 end;
 
@@ -178,17 +178,17 @@ var
   VerValue          : PVSFixedFileInfo;
   LangInfo          : PDWORDArr;
   LangID            : DWORD;
-  Desc              : PChar;
+  Desc              : PWideChar;
   i                 : Integer;
 begin
   result := 0;
-  VerInfoSize := GetFileVersionInfoSize(PChar(ParamStr(0)), LangID);
+  VerInfoSize := GetFileVersionInfoSize(PWideChar(ParamStr(0)), LangID);
   if VerInfoSize <> 0 then
   begin
     VerInfo := Pointer(GlobalAlloc(GPTR, VerInfoSize));
     if Assigned(VerInfo) then
     try
-      if GetFileVersionInfo(PChar(ParamStr(0)), 0, VerInfoSize, VerInfo) then
+      if GetFileVersionInfo(PWideChar(ParamStr(0)), 0, VerInfoSize, VerInfo) then
       begin
         if VerQueryValue(VerInfo, '\', Pointer(VerValue), VerValueSize) then
         begin
@@ -241,14 +241,14 @@ begin
   s := Format('%s %s' + #13#10 + '%s' + #13#10#13#10 + 'Copyright: %s' + #13#10+ '%s', [AppTitle, FVersionStr, FDescription, Author, URL]);
   if FCustomized then
   case MsgBoxEx(s, AppTitle, MB_OKCANCEL or MB_DEFBUTTON2) of
-    IDOK: ShellExecute(FHandle, 'open', PChar(URL), nil, nil, SW_NORMAL);
+    IDOK: ShellExecute(FHandle, 'open', PWideChar(URL), nil, nil, SW_NORMAL);
   end
   else
   begin
     if FIDIcon > -1 then
       MsgBoxIndirect(s, AppTitle, 0, 1)
     else
-      MessageBox(FHandle, PChar(s), PChar(AppTitle), MB_ICONINFORMATION);
+      MessageBox(FHandle, PWideChar(s), PWideChar(AppTitle), MB_ICONINFORMATION);
   end;
 end;
 
