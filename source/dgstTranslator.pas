@@ -117,7 +117,7 @@ var
 begin
   (* Init AvailableLanguages *)
   SetLength(fAvailableLanguages.fLng, 0);
-  hFile := FindFirstFile(PChar(IncludeTrailingPathDelimiter(ExtractFilePath(paramstr(0))) + 'lng\*.lng'), SR);
+  hFile := FindFirstFile(PWideChar(IncludeTrailingPathDelimiter(ExtractFilePath(paramstr(0))) + 'lng\*.lng'), SR);
   if hFile <> INVALID_HANDLE_VALUE then
   begin
     repeat
