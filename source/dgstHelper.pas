@@ -133,10 +133,10 @@ type
     iImage: Integer;         { output var: where to return the Image index. }
   end;
   {$EXTERNALSYM _browseinfo}
-  _browseinfo = _browseinfoA;
+  _browseinfo = _browseinfoW;
   TBrowseInfoA = _browseinfoA;
   TBrowseInfoW = _browseinfoW;
-  TBrowseInfo = TBrowseInfoA;
+  TBrowseInfo = TBrowseInfoW;
   {$EXTERNALSYM BROWSEINFOA}
   BROWSEINFOA = _browseinfoA;
   {$EXTERNALSYM BROWSEINFOW}
@@ -224,7 +224,7 @@ function SHBrowseForFolderA(var lpbi: TBrowseInfoA): PItemIDList; stdcall;
 function SHBrowseForFolderW(var lpbi: TBrowseInfoW): PItemIDList; stdcall;
 
 {$EXTERNALSYM SHGetPathFromIDList}
-function SHGetPathFromIDList(pidl: PItemIDList; pszPath: PChar): BOOL; stdcall;
+function SHGetPathFromIDList(pidl: PItemIDList; pszPath: PWideChar): BOOL; stdcall;
 {$EXTERNALSYM SHGetPathFromIDListA}
 function SHGetPathFromIDListA(pidl: PItemIDList; pszPath: PAnsiChar): BOOL; stdcall;
 {$EXTERNALSYM SHGetPathFromIDListW}
@@ -234,11 +234,11 @@ function SHGetPathFromIDListW(pidl: PItemIDList; pszPath: PWideChar): BOOL; stdc
 function SHGetSpecialFolderLocation(hwndOwner: HWND; nFolder: Integer;
   var ppidl: PItemIDList): HResult; stdcall;
 
-function SHGetPathFromIDList;        external shell32 name 'SHGetPathFromIDListA';
+function SHGetPathFromIDList;        external shell32 name 'SHGetPathFromIDListW';
 function SHGetPathFromIDListA;        external shell32 name 'SHGetPathFromIDListA';
 function SHGetPathFromIDListW;        external shell32 name 'SHGetPathFromIDListW';
 function SHGetSpecialFolderLocation;    external shell32 name 'SHGetSpecialFolderLocation';
-function SHBrowseForFolder;          external shell32 name 'SHBrowseForFolderA';
+function SHBrowseForFolder;          external shell32 name 'SHBrowseForFolderW';
 function SHBrowseForFolderA;          external shell32 name 'SHBrowseForFolderA';
 function SHBrowseForFolderW;          external shell32 name 'SHBrowseForFolderW';
 
