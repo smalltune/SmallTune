@@ -313,10 +313,10 @@ begin
     Settings.WriteSetting('no_hardware', IntToStr(BASS_SAMPLE_SOFTWARE));
 
   (* Load Plugins, do nothing on failure *)
-  if BASS_PluginLoad(PChar(ExtractFilePath(paramstr(0)) + 'libs\bassflac.dll'), 0) = 0 then
+  if BASS_PluginLoad(PAnsiChar(ExtractFilePath(paramstr(0)) + 'libs\bassflac.dll'), 0) = 0 then
     lg.WriteLog('BASS: ' + GetBassErrorName(BASS_ErrorGetCode), 'dgstMediaClass', ltError, lmNormal);
 
-  if BASS_PluginLoad(PChar(ExtractFilePath(paramstr(0)) + 'libs\basswma.dll'), 0) = 0 then
+  if BASS_PluginLoad(PAnsiChar(ExtractFilePath(paramstr(0)) + 'libs\basswma.dll'), 0) = 0 then
     lg.WriteLog('BASS: ' + GetBassErrorName(BASS_ErrorGetCode), 'dgstMediaClass', ltError, lmNormal);
 
   fSongLength := 0;
@@ -376,7 +376,7 @@ end;
 procedure TMediaClass.DoMeta;
 var
   p: Integer;
-  meta: PChar;
+  meta: PAnsiChar;
 begin
   meta := BASS_ChannelGetTags(fCurrentStream, BASS_TAG_META);
   if (meta <> nil) then
@@ -408,7 +408,7 @@ end;
 
 procedure TMediaClass.RunInternetStream(StreamURL: String);
 var
-  icy: Pchar;
+  icy: PAnsiChar;
 begin
   if StreamURL <> '' then
   begin
@@ -423,7 +423,7 @@ begin
       SendMessage(FWindowHandle, WM_CHANGE_PLAYERTYPE, 0, 0);
     end;
 
-    fCurrentStream := BASS_StreamCreateURL( PChar(StreamURL),
+    fCurrentStream := BASS_StreamCreateURL( PAnsiChar(StreamURL),
                                             0,
                                             BASS_STREAM_BLOCK or
                                             BASS_STREAM_AUTOFREE or
@@ -563,24 +563,24 @@ begin
         if fMPEGAudio.ReadFromFile(FileName) then
         if fMPEGAudio.ID3v2.Exists then
         begin
-          Specs.fTitle := Utf8ToAnsi(fMPEGAudio.ID3v2.Title);
-          Specs.fArtist := Utf8ToAnsi(fMPEGAudio.ID3v2.Artist);
-          Specs.fAlbum := Utf8ToAnsi(fMPEGAudio.ID3v2.Album);
-          Specs.fYear := Utf8ToAnsi(fMPEGAudio.ID3v2.Year);
-          Specs.fGenre := Utf8ToAnsi(fMPEGAudio.ID3v2.Genre);
+          Specs.fTitle := fMPEGAudio.ID3v2.Title;
+          Specs.fArtist := fMPEGAudio.ID3v2.Artist;
+          Specs.fAlbum := fMPEGAudio.ID3v2.Album;
+          Specs.fYear := fMPEGAudio.ID3v2.Year;
+          Specs.fGenre := fMPEGAudio.ID3v2.Genre;
         end
         else if fMPEGAudio.ID3v1.Exists then
         begin
           If Specs.fTitle = '' then
-            Specs.fTitle := Utf8ToAnsi(fMPEGAudio.ID3v1.Title);
+            Specs.fTitle := fMPEGAudio.ID3v1.Title;
           If Specs.fArtist = '' then
-            Specs.fArtist := Utf8ToAnsi(fMPEGAudio.ID3v1.Artist);
+            Specs.fArtist := fMPEGAudio.ID3v1.Artist;
           If Specs.fAlbum = '' then
-            Specs.fAlbum := Utf8ToAnsi(fMPEGAudio.ID3v1.Album);
+            Specs.fAlbum := fMPEGAudio.ID3v1.Album;
           If Specs.fYear = '' then
-            Specs.fYear := Utf8ToAnsi(fMPEGAudio.ID3v1.Year);
+            Specs.fYear := fMPEGAudio.ID3v1.Year;
           If Specs.fGenre = '' then
-            Specs.fGenre := Utf8ToAnsi(fMPEGAudio.ID3v1.Genre);
+            Specs.fGenre := fMPEGAudio.ID3v1.Genre;
         end;
       end;
 
@@ -749,24 +749,24 @@ begin
         Specs.fLength := fMPEGAudio.FileLength;
         if fMPEGAudio.ID3v2.Exists then
         begin
-          Specs.fTitle := Utf8ToAnsi(fMPEGAudio.ID3v2.Title);
-          Specs.fArtist := Utf8ToAnsi(fMPEGAudio.ID3v2.Artist);
-          Specs.fAlbum := Utf8ToAnsi(fMPEGAudio.ID3v2.Album);
-          Specs.fYear := Utf8ToAnsi(fMPEGAudio.ID3v2.Year);
-          Specs.fGenre := Utf8ToAnsi(fMPEGAudio.ID3v2.Genre);
+          Specs.fTitle := fMPEGAudio.ID3v2.Title;
+          Specs.fArtist := fMPEGAudio.ID3v2.Artist;
+          Specs.fAlbum := fMPEGAudio.ID3v2.Album;
+          Specs.fYear := fMPEGAudio.ID3v2.Year;
+          Specs.fGenre := fMPEGAudio.ID3v2.Genre;
         end
         else if fMPEGAudio.ID3v1.Exists then
         begin
           If Specs.fTitle = '' then
-            Specs.fTitle := Utf8ToAnsi(fMPEGAudio.ID3v1.Title);
+            Specs.fTitle := fMPEGAudio.ID3v1.Title;
           If Specs.fArtist = '' then
-            Specs.fArtist := Utf8ToAnsi(fMPEGAudio.ID3v1.Artist);
+            Specs.fArtist := fMPEGAudio.ID3v1.Artist;
           If Specs.fAlbum = '' then
-            Specs.fAlbum := Utf8ToAnsi(fMPEGAudio.ID3v1.Album);
+            Specs.fAlbum := fMPEGAudio.ID3v1.Album;
           If Specs.fYear = '' then
-            Specs.fYear := Utf8ToAnsi(fMPEGAudio.ID3v1.Year);
+            Specs.fYear := fMPEGAudio.ID3v1.Year;
           If Specs.fGenre = '' then
-            Specs.fGenre := Utf8ToAnsi(fMPEGAudio.ID3v1.Genre);
+            Specs.fGenre := fMPEGAudio.ID3v1.Genre;
         end;
       end;
       fDB.AddFile(Specs);
