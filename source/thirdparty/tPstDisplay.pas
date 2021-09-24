@@ -301,7 +301,7 @@ begin
     __Rendering := False;
     __Working := False;
 
-    MessageBox(WindowHandle, 'TDisplay, GDI Plus not Initialized!', PAnsiChar(AppName), MB_ICONERROR);
+    MessageBox(WindowHandle, 'TDisplay, GDI Plus not Initialized!', PWideChar(AppName), MB_ICONERROR);
     exit;
   end;
 
@@ -607,7 +607,7 @@ begin
   if gpImage <> nil then
     GdipDisposeImage(gpImage);
 
-  GdipLoadImageFromResource(hInstance, PCHAR(ResName), gpImage);
+  GdipLoadImageFromResource(hInstance, PWideChar(ResName), gpImage);
 end;
 
 procedure TDisplay.LoadImageFromFileName(FileName: string);

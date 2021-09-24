@@ -41,7 +41,7 @@ type
   TSQLiteAuthorizerCallback = function(Data: Pointer; actioncode: integer; add1,add2,add3,add4: PAnsiChar): Integer; cdecl;
   TSQLitexFuncCallback = procedure(context: sqlite3_context; argc: Integer; argv: sqlite3_values); cdecl;
   TSQLitexStepCallback = procedure(context: sqlite3_context; argc: Integer; argv: sqlite3_values); cdecl;
-  TSQLitexCompareCallback = function(data: Pointer; N1: Integer; Str1: PChar; N2: Integer; Str2: PChar): Integer; cdecl;
+  TSQLitexCompareCallback = function(data: Pointer; N1: Integer; Str1: PAnsiChar; N2: Integer; Str2: PAnsiChar): Integer; cdecl;
   TSQLitexDestroyCallback = procedure(data: Pointer);  cdecl;
   TSQLitexProgressCallback = function(data: Pointer): integer;  cdecl;
   TSQLitexFinalCallback = procedure(context: sqlite3_context); cdecl;

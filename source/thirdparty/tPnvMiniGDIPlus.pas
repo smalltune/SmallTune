@@ -561,7 +561,7 @@ begin
 end;
 
 
-function GdipLoadImageFromResource(hInstance: THandle; ResName: PChar;
+function GdipLoadImageFromResource(hInstance: THandle; ResName: PWideChar;
   out image: TGpImage): TGpStatus;
 var
   hResInfo, hResGlobal: THandle;
@@ -576,7 +576,7 @@ begin
   if @GdipLoadImageFromStream <> nil then
   begin
 
-    hResInfo := FindResource(hInstance, PCHAR(ResName), RT_RCDATA);
+    hResInfo := FindResource(hInstance, PWideChar(ResName), RT_RCDATA);
     if hResInfo <> 0 then
     begin
 
