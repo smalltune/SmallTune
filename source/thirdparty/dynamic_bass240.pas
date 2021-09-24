@@ -467,7 +467,7 @@ type
     origres: DWORD;     // original resolution
     plugin: HPLUGIN;    // plugin
     sample: HSAMPLE;    // sample
-    filename: PChar;    // filename
+    filename: PAnsiChar;    // filename
   end;
 
   BASS_PLUGINFORM = record
@@ -694,7 +694,7 @@ var BASS_Pause:function: BOOL; stdcall;
 var BASS_SetVolume:function(volume: FLOAT): BOOL; stdcall;
 var BASS_GetVolume:function: FLOAT; stdcall;
 
-var BASS_PluginLoad:function(filename: PChar; flags: DWORD): HPLUGIN; stdcall;
+var BASS_PluginLoad:function(filename: PAnsiChar; flags: DWORD): HPLUGIN; stdcall;
 var BASS_PluginFree:function(handle: HPLUGIN): BOOL; stdcall;
 var BASS_PluginGetInfo:function(handle: HPLUGIN): PBASS_PLUGININFO; stdcall;
 
@@ -810,7 +810,7 @@ Function Load_BASSDLL (const dllfilename:string) :boolean;
 const szBassDll = 'bass.dll' + #0;
 var
   oldmode:integer;
-  P: PChar;
+  P: PWideChar;
   s: string;
   dllfile: array[0..MAX_PATH + 1] of Char;
 begin
@@ -820,122 +820,122 @@ begin
     s := dllfilename;
     if Length(s) = 0 then begin
       P := nil;
-      if SearchPath(nil, PChar(szBassDll), nil, MAX_PATH, dllfile, P) > 0 then
+      if SearchPath(nil, PWideChar(szBassDll), nil, MAX_PATH, dllfile, P) > 0 then
         SetString(s, dllfile, length(dllfile))
       else exit;
       end;
     oldmode:=SetErrorMode($8001);
     s := s + #0;
-    BASS_Handle:=LoadLibrary(PChar(s)); // obtain the handle we want
+    BASS_Handle:=LoadLibrary(PWideChar(s)); // obtain the handle we want
     SetErrorMode(oldmode);
     if BASS_Handle<>0 then
        begin {now we tie the functions to the VARs from above}
 
-@BASS_SetConfig:=GetProcAddress(BASS_Handle,PChar('BASS_SetConfig'));
-@BASS_GetConfig:=GetProcAddress(BASS_Handle,PChar('BASS_GetConfig'));
-@BASS_SetConfigPtr:=GetProcAddress(BASS_Handle,PChar('BASS_SetConfigPtr'));
-@BASS_GetConfigPtr:=GetProcAddress(BASS_Handle,PChar('BASS_GetConfigPtr'));
-@BASS_GetVersion:=GetProcAddress(BASS_Handle,PChar('BASS_GetVersion'));
-@BASS_ErrorGetCode:=GetProcAddress(BASS_Handle,PChar('BASS_ErrorGetCode'));
-@BASS_GetDeviceInfo:=GetProcAddress(BASS_Handle,PChar('BASS_GetDeviceInfo'));
-@BASS_Init:=GetProcAddress(BASS_Handle,PChar('BASS_Init'));
-@BASS_SetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_SetDevice'));
-@BASS_GetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_GetDevice'));
-@BASS_Free:=GetProcAddress(BASS_Handle,PChar('BASS_Free'));
-@BASS_GetDSoundObject:=GetProcAddress(BASS_Handle,PChar('BASS_GetDSoundObject'));
-@BASS_GetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_GetInfo'));
-@BASS_Update:=GetProcAddress(BASS_Handle,PChar('BASS_Update'));
-@BASS_GetCPU:=GetProcAddress(BASS_Handle,PChar('BASS_GetCPU'));
-@BASS_Start:=GetProcAddress(BASS_Handle,PChar('BASS_Start'));
-@BASS_Stop:=GetProcAddress(BASS_Handle,PChar('BASS_Stop'));
-@BASS_Pause:=GetProcAddress(BASS_Handle,PChar('BASS_Pause'));
-@BASS_SetVolume:=GetProcAddress(BASS_Handle,PChar('BASS_SetVolume'));
-@BASS_GetVolume:=GetProcAddress(BASS_Handle,PChar('BASS_GetVolume'));
+@BASS_SetConfig:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SetConfig'));
+@BASS_GetConfig:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetConfig'));
+@BASS_SetConfigPtr:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SetConfigPtr'));
+@BASS_GetConfigPtr:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetConfigPtr'));
+@BASS_GetVersion:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetVersion'));
+@BASS_ErrorGetCode:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ErrorGetCode'));
+@BASS_GetDeviceInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetDeviceInfo'));
+@BASS_Init:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Init'));
+@BASS_SetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SetDevice'));
+@BASS_GetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetDevice'));
+@BASS_Free:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Free'));
+@BASS_GetDSoundObject:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetDSoundObject'));
+@BASS_GetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetInfo'));
+@BASS_Update:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Update'));
+@BASS_GetCPU:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetCPU'));
+@BASS_Start:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Start'));
+@BASS_Stop:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Stop'));
+@BASS_Pause:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Pause'));
+@BASS_SetVolume:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SetVolume'));
+@BASS_GetVolume:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetVolume'));
 
-@BASS_PluginLoad:=GetProcAddress(BASS_Handle,PChar('BASS_PluginLoad'));
-@BASS_PluginFree:=GetProcAddress(BASS_Handle,PChar('BASS_PluginFree'));
-@BASS_PluginGetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_PluginGetInfo'));
+@BASS_PluginLoad:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_PluginLoad'));
+@BASS_PluginFree:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_PluginFree'));
+@BASS_PluginGetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_PluginGetInfo'));
 
-@BASS_Set3DFactors:=GetProcAddress(BASS_Handle,PChar('BASS_Set3DFactors'));
-@BASS_Get3DFactors:=GetProcAddress(BASS_Handle,PChar('BASS_Get3DFactors'));
-@BASS_Set3DPosition:=GetProcAddress(BASS_Handle,PChar('BASS_Set3DPosition'));
-@BASS_Get3DPosition:=GetProcAddress(BASS_Handle,PChar('BASS_Get3DPosition'));
-@BASS_Apply3D:=GetProcAddress(BASS_Handle,PChar('BASS_Apply3D'));
-@BASS_SetEAXParameters:=GetProcAddress(BASS_Handle,PChar('BASS_SetEAXParameters'));
-@BASS_GetEAXParameters:=GetProcAddress(BASS_Handle,PChar('BASS_GetEAXParameters'));
+@BASS_Set3DFactors:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Set3DFactors'));
+@BASS_Get3DFactors:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Get3DFactors'));
+@BASS_Set3DPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Set3DPosition'));
+@BASS_Get3DPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Get3DPosition'));
+@BASS_Apply3D:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_Apply3D'));
+@BASS_SetEAXParameters:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SetEAXParameters'));
+@BASS_GetEAXParameters:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_GetEAXParameters'));
 
-@BASS_MusicLoad:=GetProcAddress(BASS_Handle,PChar('BASS_MusicLoad'));
-@BASS_MusicFree:=GetProcAddress(BASS_Handle,PChar('BASS_MusicFree'));
+@BASS_MusicLoad:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_MusicLoad'));
+@BASS_MusicFree:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_MusicFree'));
 
-@BASS_SampleLoad:=GetProcAddress(BASS_Handle,PChar('BASS_SampleLoad'));
-@BASS_SampleCreate:=GetProcAddress(BASS_Handle,PChar('BASS_SampleCreate'));
-@BASS_SampleFree:=GetProcAddress(BASS_Handle,PChar('BASS_SampleFree'));
-@BASS_SampleSetData:=GetProcAddress(BASS_Handle,PChar('BASS_SampleSetData'));
-@BASS_SampleGetData:=GetProcAddress(BASS_Handle,PChar('BASS_SampleGetData'));
-@BASS_SampleGetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_SampleGetInfo'));
-@BASS_SampleSetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_SampleSetInfo'));
-@BASS_SampleGetChannel:=GetProcAddress(BASS_Handle,PChar('BASS_SampleGetChannel'));
-@BASS_SampleGetChannels:=GetProcAddress(BASS_Handle,PChar('BASS_SampleGetChannels'));
-@BASS_SampleStop:=GetProcAddress(BASS_Handle,PChar('BASS_SampleStop'));
+@BASS_SampleLoad:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleLoad'));
+@BASS_SampleCreate:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleCreate'));
+@BASS_SampleFree:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleFree'));
+@BASS_SampleSetData:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleSetData'));
+@BASS_SampleGetData:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleGetData'));
+@BASS_SampleGetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleGetInfo'));
+@BASS_SampleSetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleSetInfo'));
+@BASS_SampleGetChannel:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleGetChannel'));
+@BASS_SampleGetChannels:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleGetChannels'));
+@BASS_SampleStop:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_SampleStop'));
 
-@BASS_StreamCreate:=GetProcAddress(BASS_Handle,PChar('BASS_StreamCreate'));
-@BASS_StreamCreateFile:=GetProcAddress(BASS_Handle,PChar('BASS_StreamCreateFile'));
-@BASS_StreamCreateURL:=GetProcAddress(BASS_Handle,PChar('BASS_StreamCreateURL'));
-@BASS_StreamCreateFileUser:=GetProcAddress(BASS_Handle,PChar('BASS_StreamCreateFileUser'));
-@BASS_StreamFree:=GetProcAddress(BASS_Handle,PChar('BASS_StreamFree'));
-@BASS_StreamGetFilePosition:=GetProcAddress(BASS_Handle,PChar('BASS_StreamGetFilePosition'));
-@BASS_StreamPutData:=GetProcAddress(BASS_Handle,PChar('BASS_StreamPutData'));
-@BASS_StreamPutFileData:=GetProcAddress(BASS_Handle,PChar('BASS_StreamPutFileData'));
+@BASS_StreamCreate:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamCreate'));
+@BASS_StreamCreateFile:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamCreateFile'));
+@BASS_StreamCreateURL:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamCreateURL'));
+@BASS_StreamCreateFileUser:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamCreateFileUser'));
+@BASS_StreamFree:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamFree'));
+@BASS_StreamGetFilePosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamGetFilePosition'));
+@BASS_StreamPutData:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamPutData'));
+@BASS_StreamPutFileData:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_StreamPutFileData'));
 
-@BASS_RecordGetDeviceInfo:=GetProcAddress(BASS_Handle,PChar('BASS_RecordGetDeviceInfo'));
-@BASS_RecordInit:=GetProcAddress(BASS_Handle,PChar('BASS_RecordInit'));
-@BASS_RecordSetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_RecordSetDevice'));
-@BASS_RecordGetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_RecordGetDevice'));
-@BASS_RecordFree:=GetProcAddress(BASS_Handle,PChar('BASS_RecordFree'));
-@BASS_RecordGetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_RecordGetInfo'));
-@BASS_RecordGetInputName:=GetProcAddress(BASS_Handle,PChar('BASS_RecordGetInputName'));
-@BASS_RecordSetInput:=GetProcAddress(BASS_Handle,PChar('BASS_RecordSetInput'));
-@BASS_RecordGetInput:=GetProcAddress(BASS_Handle,PChar('BASS_RecordGetInput'));
-@BASS_RecordStart:=GetProcAddress(BASS_Handle,PChar('BASS_RecordStart'));
+@BASS_RecordGetDeviceInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordGetDeviceInfo'));
+@BASS_RecordInit:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordInit'));
+@BASS_RecordSetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordSetDevice'));
+@BASS_RecordGetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordGetDevice'));
+@BASS_RecordFree:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordFree'));
+@BASS_RecordGetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordGetInfo'));
+@BASS_RecordGetInputName:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordGetInputName'));
+@BASS_RecordSetInput:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordSetInput'));
+@BASS_RecordGetInput:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordGetInput'));
+@BASS_RecordStart:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_RecordStart'));
 
-@BASS_ChannelBytes2Seconds:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelBytes2Seconds'));
-@BASS_ChannelSeconds2Bytes:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSeconds2Bytes'));
-@BASS_ChannelGetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetDevice'));
-@BASS_ChannelSetDevice:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetDevice'));
-@BASS_ChannelIsActive:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelIsActive'));
-@BASS_ChannelGetInfo:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetInfo'));
-@BASS_ChannelGetTags:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetTags'));
-@BASS_ChannelFlags:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelFlags'));
-@BASS_ChannelUpdate:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelUpdate'));
-@BASS_ChannelLock:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelLock'));
-@BASS_ChannelPlay:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelPlay'));
-@BASS_ChannelStop:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelStop'));
-@BASS_ChannelPause:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelPause'));
-@BASS_ChannelSetAttribute:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetAttribute'));
-@BASS_ChannelGetAttribute:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetAttribute'));
-@BASS_ChannelSlideAttribute:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSlideAttribute'));
-@BASS_ChannelIsSliding:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelIsSliding'));
-@BASS_ChannelSet3DAttributes:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSet3DAttributes'));
-@BASS_ChannelGet3DAttributes:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGet3DAttributes'));
-@BASS_ChannelSet3DPosition:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSet3DPosition'));
-@BASS_ChannelGet3DPosition:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGet3DPosition'));
-@BASS_ChannelGetLength:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetLength'));
-@BASS_ChannelSetPosition:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetPosition'));
-@BASS_ChannelGetPosition:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetPosition'));
-@BASS_ChannelGetLevel:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetLevel'));
-@BASS_ChannelGetData:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelGetData'));
-@BASS_ChannelSetSync:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetSync'));
-@BASS_ChannelRemoveSync:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelRemoveSync'));
-@BASS_ChannelSetDSP:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetDSP'));
-@BASS_ChannelRemoveDSP:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelRemoveDSP'));
-@BASS_ChannelSetLink:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetLink'));
-@BASS_ChannelRemoveLink:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelRemoveLink'));
-@BASS_ChannelSetFX:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelSetFX'));
-@BASS_ChannelRemoveFX:=GetProcAddress(BASS_Handle,PChar('BASS_ChannelRemoveFX'));
+@BASS_ChannelBytes2Seconds:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelBytes2Seconds'));
+@BASS_ChannelSeconds2Bytes:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSeconds2Bytes'));
+@BASS_ChannelGetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetDevice'));
+@BASS_ChannelSetDevice:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetDevice'));
+@BASS_ChannelIsActive:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelIsActive'));
+@BASS_ChannelGetInfo:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetInfo'));
+@BASS_ChannelGetTags:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetTags'));
+@BASS_ChannelFlags:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelFlags'));
+@BASS_ChannelUpdate:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelUpdate'));
+@BASS_ChannelLock:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelLock'));
+@BASS_ChannelPlay:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelPlay'));
+@BASS_ChannelStop:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelStop'));
+@BASS_ChannelPause:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelPause'));
+@BASS_ChannelSetAttribute:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetAttribute'));
+@BASS_ChannelGetAttribute:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetAttribute'));
+@BASS_ChannelSlideAttribute:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSlideAttribute'));
+@BASS_ChannelIsSliding:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelIsSliding'));
+@BASS_ChannelSet3DAttributes:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSet3DAttributes'));
+@BASS_ChannelGet3DAttributes:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGet3DAttributes'));
+@BASS_ChannelSet3DPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSet3DPosition'));
+@BASS_ChannelGet3DPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGet3DPosition'));
+@BASS_ChannelGetLength:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetLength'));
+@BASS_ChannelSetPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetPosition'));
+@BASS_ChannelGetPosition:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetPosition'));
+@BASS_ChannelGetLevel:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetLevel'));
+@BASS_ChannelGetData:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelGetData'));
+@BASS_ChannelSetSync:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetSync'));
+@BASS_ChannelRemoveSync:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelRemoveSync'));
+@BASS_ChannelSetDSP:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetDSP'));
+@BASS_ChannelRemoveDSP:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelRemoveDSP'));
+@BASS_ChannelSetLink:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetLink'));
+@BASS_ChannelRemoveLink:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelRemoveLink'));
+@BASS_ChannelSetFX:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelSetFX'));
+@BASS_ChannelRemoveFX:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_ChannelRemoveFX'));
 
-@BASS_FXSetParameters:=GetProcAddress(BASS_Handle,PChar('BASS_FXSetParameters'));
-@BASS_FXGetParameters:=GetProcAddress(BASS_Handle,PChar('BASS_FXGetParameters'));
-@BASS_FXReset:=GetProcAddress(BASS_Handle,PChar('BASS_FXReset'));
+@BASS_FXSetParameters:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_FXSetParameters'));
+@BASS_FXGetParameters:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_FXGetParameters'));
+@BASS_FXReset:=GetProcAddress(BASS_Handle,PAnsiChar('BASS_FXReset'));
 
       {now check if everything is linked in correctly}
       if
