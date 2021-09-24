@@ -71,7 +71,7 @@ procedure TInternetStations.CreateISMenu(Parent: HMENU);
 var
   MenuInf: TMenuInfo;
 begin
-  AppendMenu(Parent, MF_STRING or MF_POPUP, fISGenreList.MenuHandle, PChar('INet-Radio'));
+  AppendMenu(Parent, MF_STRING or MF_POPUP, fISGenreList.MenuHandle, PWideChar('INet-Radio'));
   MenuInf.cbSize := SizeOf(TMenuInfo);
   MenuInf.fMask := MiM_STYLE or MIM_APPLYTOSUBMENUS;
   MenuInf.dwStyle := MNS_NOTIFYBYPOS;
@@ -90,8 +90,8 @@ begin
     begin
       fIsGenreList.Genres[I].MenuHandle := CreatePopUpMenu;
       for N := 0 to Length(fISGenreList.Genres[I].Stations) - 1 do
-        AppendMenu(fISGenreList.Genres[i].MenuHandle, MF_STRING, 0, PChar(fISGenreList.Genres[I].Stations[N].Name));
-      AppendMenu(fISGenreList.MenuHandle, MF_STRING or MF_POPUP, fISGenreList.Genres[I].MenuHandle, PChar(fISGenreList.Genres[I].Name));
+        AppendMenu(fISGenreList.Genres[i].MenuHandle, MF_STRING, 0, PWideChar(fISGenreList.Genres[I].Stations[N].Name));
+      AppendMenu(fISGenreList.MenuHandle, MF_STRING or MF_POPUP, fISGenreList.Genres[I].MenuHandle, PWideChar(fISGenreList.Genres[I].Name));
     end;
 end;
 

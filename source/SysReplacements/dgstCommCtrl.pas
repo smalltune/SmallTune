@@ -320,7 +320,7 @@ function ImageList_Remove(ImageList: HIMAGELIST; Index: Integer): Bool; stdcall;
 function ImageList_GetIcon(ImageList: HIMAGELIST; Index: Integer;
   Flags: Cardinal): HIcon; stdcall;
 {$EXTERNALSYM ImageList_LoadImage}
-function ImageList_LoadImage(Instance: THandle; Bmp: PChar; CX, Grow: Integer;
+function ImageList_LoadImage(Instance: THandle; Bmp: PWideChar; CX, Grow: Integer;
   Mask: TColorRef; pType, Flags: Cardinal): HIMAGELIST; stdcall;
 {$EXTERNALSYM ImageList_LoadImageA}
 function ImageList_LoadImageA(Instance: THandle; Bmp: PAnsiChar; CX, Grow: Integer;
@@ -365,7 +365,7 @@ procedure ImageList_RemoveAll(ImageList: HIMAGELIST); //inline;
 function ImageList_ExtractIcon(Instance: THandle; ImageList: HIMAGELIST;
   Image: Integer): HIcon; //inline;
 {$EXTERNALSYM ImageList_LoadBitmap}
-function ImageList_LoadBitmap(Instance: THandle; Bmp: PChar;
+function ImageList_LoadBitmap(Instance: THandle; Bmp: PWideChar;
   CX, Grow: Integer; MasK: TColorRef): HIMAGELIST;
 {$EXTERNALSYM ImageList_LoadBitmapA}
 function ImageList_LoadBitmapA(Instance: THandle; Bmp: PAnsiChar;
@@ -678,13 +678,13 @@ Type
     pszText: PWideChar;
   end;
   {$EXTERNALSYM tagNMTOOLBAR}
-  tagNMTOOLBAR = tagNMTOOLBARA;
+  tagNMTOOLBAR = tagNMTOOLBARW;
   PNMToolBarA = ^TNMToolBarA;
   PNMToolBarW = ^TNMToolBarW;
-  PNMToolBar = PNMToolBarA;
+  PNMToolBar = PNMToolBarW;
   TNMToolBarA = tagNMTOOLBARA;
   TNMToolBarW = tagNMTOOLBARW;
-  TNMToolBar = TNMToolBarA;
+  TNMToolBar = TNMToolBarW;
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -1918,7 +1918,7 @@ const
 type
   PNMTreeViewA = ^TNMTreeViewA;
   PNMTreeViewW = ^TNMTreeViewW;
-  PNMTreeView = PNMTreeViewA;
+  PNMTreeView = PNMTreeViewW;
   {$EXTERNALSYM tagNMTREEVIEWA}
   tagNMTREEVIEWA = packed record
     hdr: TNMHDR;
@@ -1936,7 +1936,7 @@ type
     ptDrag: TPoint;
   end;
   {$EXTERNALSYM tagNMTREEVIEW}
-  tagNMTREEVIEW = tagNMTREEVIEWA;
+  tagNMTREEVIEW = tagNMTREEVIEWW;
   {$EXTERNALSYM _NM_TREEVIEWA}
   _NM_TREEVIEWA = tagNMTREEVIEWA;
   {$EXTERNALSYM _NM_TREEVIEWW}
@@ -1945,13 +1945,13 @@ type
   _NM_TREEVIEW = _NM_TREEVIEWA;
   TNMTreeViewA  = tagNMTREEVIEWA;
   TNMTreeViewW  = tagNMTREEVIEWW;
-  TNMTreeView = TNMTreeViewA;
+  TNMTreeView = TNMTreeViewW;
   {$EXTERNALSYM NM_TREEVIEWA}
   NM_TREEVIEWA  = tagNMTREEVIEWA;
   {$EXTERNALSYM NM_TREEVIEWW}
   NM_TREEVIEWW  = tagNMTREEVIEWW;
   {$EXTERNALSYM NM_TREEVIEW}
-  NM_TREEVIEW = NM_TREEVIEWA;
+  NM_TREEVIEW = NM_TREEVIEWW;
 
 const
   {$EXTERNALSYM TVN_SELCHANGINGA}
@@ -2105,13 +2105,13 @@ type
     lParam: LPARAM;
   end;
   {$EXTERNALSYM tagNMTVGETINFOTIP}
-  tagNMTVGETINFOTIP = tagNMTVGETINFOTIPA;
+  tagNMTVGETINFOTIP = tagNMTVGETINFOTIPW;
   PNMTVGetInfoTipA = ^TNMTVGetInfoTipA;
   PNMTVGetInfoTipW = ^TNMTVGetInfoTipW;
-  PNMTVGetInfoTip = PNMTVGetInfoTipA;
+  PNMTVGetInfoTip = PNMTVGetInfoTipW;
   TNMTVGetInfoTipA = tagNMTVGETINFOTIPA;
   TNMTVGetInfoTipW = tagNMTVGETINFOTIPW;
-  TNMTVGetInfoTip = TNMTVGetInfoTipA;
+  TNMTVGetInfoTip = TNMTVGetInfoTipW;
 
 const
   // treeview's customdraw return meaning don't draw images.  valid on CDRF_NOTIFYITEMPREPAINT
@@ -2143,7 +2143,7 @@ function ImageList_DrawEx; external cctrl name 'ImageList_DrawEx';
 function ImageList_DrawIndirect; external cctrl name 'ImageList_DrawIndirect';
 function ImageList_Remove; external cctrl name 'ImageList_Remove';
 function ImageList_GetIcon; external cctrl name 'ImageList_GetIcon';
-function ImageList_LoadImage; external cctrl name 'ImageList_LoadImageA';
+function ImageList_LoadImage; external cctrl name 'ImageList_LoadImageW';
 function ImageList_LoadImageA; external cctrl name 'ImageList_LoadImageA';
 function ImageList_LoadImageW; external cctrl name 'ImageList_LoadImageW';
 function ImageList_Copy; external cctrl name 'ImageList_Copy';
@@ -2196,7 +2196,7 @@ begin
   Result := ImageList_GetIcon(ImageList, Image, 0);
 end;
 
-function ImageList_LoadBitmap(Instance: THandle; Bmp: PChar;
+function ImageList_LoadBitmap(Instance: THandle; Bmp: PWideChar;
   CX, Grow: Integer; Mask: TColorRef): HIMAGELIST;
 begin
   Result := ImageList_LoadImage(Instance, Bmp, CX, Grow, Mask,

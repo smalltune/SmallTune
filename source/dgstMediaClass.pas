@@ -221,8 +221,8 @@ begin
   if IsFirstStart then
   begin
       case MessageBox(0,
-                      PChar(Translator[LNG_WHERETOSAVEDB]),
-                      PChar(Translator[LNG_WHERETOSAVEDBCAPTION]),
+                      PWideChar(Translator[LNG_WHERETOSAVEDB]),
+                      PWideChar(Translator[LNG_WHERETOSAVEDBCAPTION]),
                       MB_YESNO or MB_ICONINFORMATION
                       ) of
           IDYES:
@@ -240,8 +240,8 @@ begin
 
       //Show special Windows 7 Message
       MessageBox(0,
-                      PChar(Translator[LNG_USINGWIN7]),
-                      PChar(Translator[LNG_USINGWIN7CAPTION]),
+                      PWideChar(Translator[LNG_USINGWIN7]),
+                      PWideChar(Translator[LNG_USINGWIN7CAPTION]),
                       MB_OK or MB_ICONINFORMATION
                       );
 
@@ -301,7 +301,7 @@ begin
   lg.WriteLog('BASS: ' + GetBassErrorName(BASS_ErrorGetCode), 'dgstMediaClass', ltInformation, lmExtended);
 
   (* Set User Agent *)
-  BASS_SetConfigPtr(BASS_CONFIG_NET_AGENT, PChar(USER_AGENT));
+  BASS_SetConfigPtr(BASS_CONFIG_NET_AGENT, PAnsiChar(USER_AGENT));
 
   if Settings.GetSetting('use_32_bit') <> '0' then
     Settings.WriteSetting('use_32_bit', IntToStr(BASS_SAMPLE_FLOAT));
@@ -385,7 +385,7 @@ begin
     if (p = 0) then
       Exit;
     p := p + 13;
-    fCurrentMediaItem.Title := String(Pchar(Copy(meta, p, Pos(';', meta) - p - 1)));
+    fCurrentMediaItem.Title := String(PAnsiChar(Copy(meta, p, Pos(';', meta) - p - 1)));
     lg.WriteLog('BASS: New Stream Title: ' + fCurrentMediaItem.Title, 'dgstMediaClass', ltInformation, lmExtended);
     if Assigned(fOnNewMeta) then
       fOnNewMeta(fCurrentMediaItem.Title);
@@ -452,9 +452,9 @@ begin
       while (icy^ <> #0) do
       begin
         if (Copy(icy, 1, 9) = 'icy-name:') then
-          fCurrentMediaItem.Artist := String(PChar(Copy(icy, 10, MaxInt)))
+          fCurrentMediaItem.Artist := String(PAnsiChar(Copy(icy, 10, MaxInt)))
         else if (Copy(icy, 1, 7) = 'icy-br:') then
-          fCurrentMediaItem.Artist := fCurrentMediaItem.Artist + ' [' + String(PChar('bitrate: ' + Copy(icy, 8, MaxInt))) + ']';
+          fCurrentMediaItem.Artist := fCurrentMediaItem.Artist + ' [' + String(PAnsiChar('bitrate: ' + Copy(icy, 8, MaxInt))) + ']';
         icy := icy + Length(icy) + 1;
       end;
     lg.WriteLog('BASS: ' + GetBassErrorName(BASS_ErrorGetCode), 'dgstMediaClass', ltInformation, lmExtended);
@@ -601,7 +601,7 @@ begin
 
 
         fCurrentStream := BASS_StreamCreateFile(  False,
-                                              PChar(filename),
+                                              PAnsiChar(filename),
                                               0,
                                               0,
                                               BASS_STREAM_PRESCAN or

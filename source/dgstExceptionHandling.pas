@@ -111,7 +111,7 @@ begin
     BASS_ERROR_UNKNOWN      : Tmp := LNG_BASS_ERROR_UNKNOWN;   // some other mystery problem
   end;
 
-  MessageBox(0, PChar(Tmp), 'BASS-Error!', MB_OK or MB_ICONERROR);
+  MessageBox(0, PWideChar(Tmp), 'BASS-Error!', MB_OK or MB_ICONERROR);
 
 end;
 

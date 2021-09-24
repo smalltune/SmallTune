@@ -73,7 +73,7 @@ type
       procedure ResetData;                                   { Reset all data }
       function ReadFromFile(const FileName: string): Boolean;      { Load tag }
     // Added function ReadFromTagStream for TBASSPlayer by Silhwan Hyun
-      function ReadFromTagStream(TagStream : pchar;
+      function ReadFromTagStream(TagStream : PAnsiChar;
                                  var MP3TagInfo : TMP3TagInfo): Boolean;  { Load tag from tag stream }
       function RemoveFromFile(const FileName: string): Boolean;  { Delete tag }
       function SaveToFile(const FileName: string): Boolean;        { Save tag }
@@ -331,7 +331,7 @@ end;
 
 
 // Added function for TBassPlayer by Silhwan Hyun
-function TID3v1.ReadFromTagStream(TagStream : pchar;
+function TID3v1.ReadFromTagStream(TagStream : PAnsiChar;
                                   var MP3TagInfo : TMP3TagInfo): Boolean; { Load tag from tag stream }
 var
    TagData : TagRecord;

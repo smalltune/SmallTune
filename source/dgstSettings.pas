@@ -78,8 +78,8 @@ begin
   if fSettings = nil then
   begin
       MessageBox(0,
-                      PChar('Unable to load Settings. Maybe incorrect Database-Version? Please delete the database.' +#13#10+' File can be found at:' + #13#10 + #13#10 + fDB.FileName),
-                      PChar('Settings-Error!'),
+                      PWideChar('Unable to load Settings. Maybe incorrect Database-Version? Please delete the database.' +#13#10+' File can be found at:' + #13#10 + #13#10 + fDB.FileName),
+                      PWideChar('Settings-Error!'),
                       MB_OK or MB_ICONERROR
                       );
       Exit;
