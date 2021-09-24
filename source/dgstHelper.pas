@@ -286,7 +286,7 @@ var
   Handle   : THandle;
   FindData : TWin32FindData;
 begin
-  Handle   := FindFirstFile(pchar(Directory),FindData);
+  Handle   := FindFirstFile(PWideChar(Directory),FindData);
   Result   := (Handle <> INVALID_HANDLE_VALUE) and
     (FindData.dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY <> 0);
 
@@ -310,7 +310,7 @@ begin
   if (Length(Dir) < 3) or DirectoryExists(Dir)
     or (ExtractFilePath(Dir) = Dir) then Exit;
 
-  Result := ForceDirectories(ExtractFilePath(Dir)) and CreateDirectory(PChar(Dir), nil);
+  Result := ForceDirectories(ExtractFilePath(Dir)) and CreateDirectory(PWideChar(Dir), nil);
 end;
 
 function IncludeTrailingPathDelimiter(Path: String): String;
@@ -387,11 +387,11 @@ function GetFileVersion: String;
 
   Begin
     Result := 'NoVersionInfo';
-    i := GetFileVersionInfoSize(PChar(ParamStr(0)), W);
+    i := GetFileVersionInfoSize(PWideChar(ParamStr(0)), W);
     If i = 0 Then Exit;
     GetMem(P, i);
     Try
-      If not GetFileVersionInfo(PChar(ParamStr(0)), W, i, P)
+      If not GetFileVersionInfo(PWideChar(ParamStr(0)), W, i, P)
         or not VerQueryValue(P, '\', Pointer(FI), W) Then Exit;
       Result := IntToStr(FI^.dwFileVersionMS shr 16)
         + '.' + IntToStr(FI^.dwFileVersionMS and $FFFF)
@@ -432,12 +432,12 @@ end;
 
 function Like(const AString, APattern: String): Boolean;
 var
-  StringPtr, PatternPtr: PChar;
-  StringRes, PatternRes: PChar;
+  StringPtr, PatternPtr: PWideChar;
+  StringRes, PatternRes: PWideChar;
 begin
   Result:=false;
-  StringPtr:=PChar(AString);
-  PatternPtr:=PChar(APattern);
+  StringPtr:=PWideChar(AString);
+  PatternPtr:=PWideChar(APattern);
   StringRes:=nil;
   PatternRes:=nil;
   repeat
@@ -520,7 +520,7 @@ end; {Michael Winter}
 function OpenFolder(Caption, DefPath: string): string;
 var
   bi: TBrowseInfo;
-  lpBuffer: PChar;
+  lpBuffer: PWideChar;
   pidlPrograms, pidlBrowse: PItemIDList;
 
   function BrowseCallbackProc(hwnd: HWND; uMsg: UINT; lParam: Cardinal;
@@ -534,7 +534,7 @@ var
       BFFM_SELCHANGED:
         begin
           SHGetPathFromIDList(PItemIDList(lParam), @PathName);
-          SendMessage(hwnd, BFFM_SETSTATUSTEXT, 0, Longint(PChar(@PathName)));
+          SendMessage(hwnd, BFFM_SETSTATUSTEXT, 0, Longint(PWideChar(@PathName)));
         end;
     end;
     Result := 0;
@@ -551,10 +551,10 @@ begin
   bi.hwndOwner := GetActiveWindow;
   bi.pidlRoot := pidlPrograms;
   bi.pszDisplayName := lpBuffer;
-  bi.lpszTitle := PChar(Caption);
+  bi.lpszTitle := PWideChar(Caption);
   bi.ulFlags := BIF_RETURNONLYFSDIRS or BIF_STATUSTEXT;
   bi.lpfn := @BrowseCallbackProc;
-  bi.lParam := Integer(PChar(DefPath));
+  bi.lParam := Integer(PWideChar(DefPath));
 
   pidlBrowse := SHBrowseForFolder(bi);
   if (pidlBrowse <> nil) then
@@ -596,7 +596,7 @@ var
   Handle   : THandle;
   FindData : TWin32FindData;
 begin
-  Handle   := FindFirstFile(pchar(Filename),FindData);
+  Handle   := FindFirstFile(PWideChar(Filename),FindData);
   Result   := (Handle <> INVALID_HANDLE_VALUE);
 
   if(Result) then Windows.FindClose(Handle);
